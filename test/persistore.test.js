@@ -37,10 +37,7 @@ describe('Persistore - localStorageAvailable', () => {
         expect(localStorageAvailable()).toBe(true);
 
         windowMock.localStorage.getItem.wasNotCalled();
-        windowMock.localStorage.setItem.wasCalledWith(
-            '__storage_test__',
-            '__storage_test__'
-        );
+        windowMock.localStorage.setItem.wasCalledWith('__storage_test__', '__storage_test__');
         windowMock.localStorage.removeItem.wasCalledWith('__storage_test__');
         expect(localVariables.localStorageAvailable).toBe(true);
     });
@@ -50,10 +47,7 @@ describe('Persistore - localStorageAvailable', () => {
         expect(localStorageAvailable()).toBe(false);
 
         windowMock.localStorage.getItem.wasNotCalled();
-        windowMock.localStorage.setItem.wasCalledWith(
-            '__storage_test__',
-            '__storage_test__'
-        );
+        windowMock.localStorage.setItem.wasCalledWith('__storage_test__', '__storage_test__');
         windowMock.localStorage.removeItem.wasNotCalled();
         expect(localVariables.localStorageAvailable).toBe(false);
     });
@@ -141,9 +135,7 @@ describe('Persistore - CookieUtil', () => {
     });
     it('sets the cookie with value', () => {
         CookieUtil.set('myCookie', '+myValue?');
-        expect(windowMock.document.cookie).toBe(
-            'myCookie=%2BmyValue%3F;Secure;Path=/'
-        );
+        expect(windowMock.document.cookie).toBe('myCookie=%2BmyValue%3F;Secure;Path=/');
     });
     it('removes the cookie with value', () => {
         CookieUtil.remove('myCookie');
@@ -157,8 +149,7 @@ describe('Persistore - CookieUtil', () => {
         expect(CookieUtil.get('myCookie')).toBe('+myValue?');
     });
     it('returns undefined if cookie does not exist', () => {
-        windowMock.document.cookie =
-            'someCookieHere=andThisValue; andSoOn=yeah;  foo=bar;';
+        windowMock.document.cookie = 'someCookieHere=andThisValue; andSoOn=yeah;  foo=bar;';
         expect(CookieUtil.get('myCookie')).toBe(undefined);
     });
 });

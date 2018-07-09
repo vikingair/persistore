@@ -43,12 +43,8 @@ const removeCookie = (name: string) => {
 };
 
 const getCookie = (name: string): string | void => {
-    const cookieList: Array<
-        string
-    > = _VariableProvider.getWindow().document.cookie.split(';');
-    const nameValuePairs: Array<
-        Array<string>
-    > = cookieList.map((cookie: string): Array<string> => {
+    const cookieList: Array<string> = _VariableProvider.getWindow().document.cookie.split(';');
+    const nameValuePairs: Array<Array<string>> = cookieList.map((cookie: string): Array<string> => {
         return cookie.split('=');
     });
     const foundCookie: Array<
@@ -76,12 +72,12 @@ export const cookieAvailable = (): boolean => {
             CookieUtil.set(x, x);
             lv.cookieAvailable = document.cookie.indexOf(x) !== -1;
             CookieUtil.remove(x);
-            lv.cookieAvailable =
-                lv.cookieAvailable && document.cookie.indexOf(x) === -1;
+            lv.cookieAvailable = lv.cookieAvailable && document.cookie.indexOf(x) === -1;
         } catch (e) {
             lv.cookieAvailable = false;
         }
     }
+
     return Boolean(lv.cookieAvailable);
 };
 
@@ -97,7 +93,7 @@ const set = (name: string, value: string): void => {
 
 const get = (name: string): string | void => {
     if (localStorageAvailable()) {
-        return _VariableProvider.getWindow().localStorage.getItem(name);
+        return _VariableProvider.getWindow().localStorage.getItem(name) || undefined;
     } else if (cookieAvailable()) {
         return CookieUtil.get(name);
     } else {

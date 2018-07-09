@@ -5,15 +5,35 @@
 
 # persistore
 
+The `Persistore` is primary designed to use a very easy API (`get`, `set`, `remove`)
+to store any string with fallback strategies that apply automatically to each
+client browser. So if `localStorage` is not accessible it falls back internally to `cookies`.
+And if this would be neither possible, it will just use local variables, which is as
+persistent as possible in this situation without any backend support.
+
 ### Some aspects
 - `flow` support out-of-the-box
 - coverage of 100% is mandatory
+- < 0.7 kB (gzipped) (see [bundlephobia](https://bundlephobia.com/result?p=persistore))
 - any issues will be fixed as soon as possible
 
 ### Installation
 ##### With yarn
 ```
 yarn add persistore
+```
+
+### Usage
+```js
+import { Persistore } from 'persistore';
+
+Persistore.set('my-key', '{"here": "comes your data"}');
+
+console.log(Persistore.get('my-key')); // prints: '{"here": "comes your data"}'
+
+Persistore.remove('my-key');
+
+console.log(Persistore.get('my-key')); // prints: undefined
 ```
   
 [license-image]: https://img.shields.io/badge/license-MIT-blue.svg
