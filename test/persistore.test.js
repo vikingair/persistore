@@ -207,11 +207,12 @@ describe('Persistore', () => {
     });
     it('gets the item from local storage', () => {
         localVariables.localStorageAvailable = true;
-        windowMock.localStorage.getItem.returns('myValue');
+        windowMock.localStorage.getItem.returns('myValue', null);
 
         expect(Persistore.get('myName')).toBe('myValue');
+        expect(Persistore.get('myName2')).toBe(undefined);
 
-        windowMock.localStorage.getItem.wasCalledWith('myName');
+        windowMock.localStorage.getItem.hasCallHistory([['myName'], ['myName2']]);
         cookieUtilMock.get.wasNotCalled();
     });
     it('gets the item from cookie', () => {
