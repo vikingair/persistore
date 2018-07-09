@@ -1,0 +1,31 @@
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:flowtype/recommended",
+    "prettier",
+    "prettier/flowtype"
+  ],
+  "plugins": [
+    "prettier",
+    "flowtype"
+  ],
+  "parser": "babel-eslint",
+  "env": {
+    "es6": true,
+    "jest": true,
+    "browser": true
+  },
+  "rules": {
+    "prettier/prettier": ["error", {
+      "useTabs": false,
+      "printWidth": 80,
+      "tabWidth": 4,
+      "singleQuote": true,
+      "trailingComma": "es5",
+      "jsxBracketSameLine": true,
+      "parser": "flow"}],
+    "no-unused-vars": 2,
+    "flowtype/require-valid-file-annotation": [2, "always"],
+    "react/prop-types": 0
+  }
+}
