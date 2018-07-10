@@ -1,6 +1,6 @@
 {
   "name": "persistore",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Automatically applying persistent storage with fallback strategies",
   "main": "dist/persistore.js",
   "files": [
@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/fdc-viktor-luft/spy4js"
+    "url": "https://github.com/fdc-viktor-luft/persistore"
   },
   "keywords": [
     "persistent",
