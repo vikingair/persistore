@@ -14,7 +14,7 @@ persistent as possible in this situation without any backend support.
 ### Some aspects
 - `flow` support out-of-the-box
 - coverage of 100% is mandatory
-- < 0.7 kB (gzipped) (see [bundlephobia](https://bundlephobia.com/result?p=persistore))
+- < 0.8 kB (gzipped) (see [bundlephobia](https://bundlephobia.com/result?p=persistore))
 - any issues will be fixed as soon as possible
 
 ### Installation
@@ -35,6 +35,24 @@ Persistore.remove('my-key');
 
 console.log(Persistore.get('my-key')); // prints: undefined
 ```
+Same is possible for persistence restricted to session lifetime:
+```js
+import { Persistore } from 'persistore';
+
+Persistore.session.set('my-key', '{"here": "comes your data"}');
+
+console.log(Persistore.session.get('my-key')); // prints: '{"here": "comes your data"}'
+
+Persistore.session.remove('my-key');
+
+console.log(Persistore.session.get('my-key')); // prints: undefined
+```
+HINT: Since most browsers have a strict cookie size limitation, the Persistore will throw an error if
+it would try to insert a cookie which exceeds the maximum size of 4093 bytes (iOS Safari reserves 3 additional bytes).
+The actual browser behaviour in that case would be to silently do nothing, what can lead to strange behaviour of your application.
+Therefore you should catch the possibly thrown error if you want to store large strings to handle this special case.
+Another useful information for you might be: localStorage and sessionStorage are not available on some browsers. The
+most common cases are iOS-Safari-Private-Mode users, where the Persistore will always fallback to cookies.
   
 [license-image]: https://img.shields.io/badge/license-MIT-blue.svg
 [license-url]: https://github.com/fdc-viktor-luft/persistore/blob/master/LICENSE

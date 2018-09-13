@@ -2,6 +2,7 @@
 
 const variables: {
     useLocalStorage?: boolean,
+    useSessionStorage?: boolean,
     useCookies?: boolean,
     store: Object,
 } = {
@@ -10,48 +11,57 @@ const variables: {
 
 export const _Persistore = {
     variables: () => variables,
-    window: () => window,
+    storage: (local: boolean) => (local ? window.localStorage : window.sessionStorage),
+    document: () => window.document,
 };
 
-export const useLocalStorage = (): boolean => {
+export const useStorage = (local: boolean): boolean => {
     const lv = _Persistore.variables();
-    if (lv.useLocalStorage === undefined) {
+    const isAvailable = local ? 'useLocalStorage' : 'useSessionStorage';
+    if (lv[isAvailable] === undefined) {
         try {
-            const storage = _Persistore.window().localStorage;
+            const storage = _Persistore.storage(local);
             const x = '__storage_test__';
             storage.setItem(x, x);
             storage.removeItem(x);
-            lv.useLocalStorage = true;
+            lv[isAvailable] = true;
         } catch (e) {
-            lv.useLocalStorage = false;
+            lv[isAvailable] = false;
         }
     }
-    return lv.useLocalStorage;
+    return (lv[isAvailable]: any);
 };
 
 // it is very important that deleting and setting cookies is performed
 // on the same cookie location
 const cookieLocation = 'Secure;Path=/;SameSite=strict';
+const MAX_COOKIE_LENGTH = 4093;
 
 const setCookie = (name: string, value: string): void => {
     const encodedValue = encodeURIComponent(value);
-    _Persistore.window().document.cookie = `${name}=${encodedValue};${cookieLocation}`;
+    const cookie = `${name}=${encodedValue};${cookieLocation}`;
+    if (cookie.length > MAX_COOKIE_LENGTH)
+        throw new Error(
+            `Unable to set cookie. Cookie string is to long (${cookie.length} > ${MAX_COOKIE_LENGTH}).`
+        );
+    _Persistore.document().cookie = cookie;
 };
 
 const removeCookie = (name: string): void => {
-    _Persistore.window().document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:01 GMT;${cookieLocation}`;
+    _Persistore.document().cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:01 GMT;${cookieLocation}`;
 };
 
 type CookieNameValuePairs = Array<Array<string>>;
 
 const getCookie = (name: string): string | void => {
-    const list: Array<string> = _Persistore.window().document.cookie.split(';');
-    const pairs: CookieNameValuePairs = list.map((cookie: string): Array<string> => {
-        return cookie.split('=');
-    });
-    const foundCookie: CookieNameValuePairs = pairs.filter((cookiePair: Array<string>): boolean => {
-        return cookiePair.length === 2 && cookiePair[0].trim() === name;
-    });
+    const list: Array<string> = _Persistore.document().cookie.split(';');
+    const pairs: CookieNameValuePairs = list.map((cookie: string): Array<string> =>
+        cookie.split('=')
+    );
+    const foundCookie: CookieNameValuePairs = pairs.filter(
+        (cookiePair: Array<string>): boolean =>
+            cookiePair.length === 2 && cookiePair[0].trim() === name
+    );
     if (foundCookie.length > 0) return decodeURIComponent(foundCookie[0][1]);
 };
 
@@ -65,7 +75,7 @@ export const useCookies = (): boolean => {
     const lv = _Persistore.variables();
     if (lv.useCookies === undefined) {
         try {
-            const document = _Persistore.window().document;
+            const document = _Persistore.document();
             const x = '__cookie_test__';
             CookieUtil.set(x, x);
             lv.useCookies = document.cookie.indexOf(x) !== -1;
@@ -79,22 +89,31 @@ export const useCookies = (): boolean => {
     return Boolean(lv.useCookies);
 };
 
-const set = (name: string, value: string): void => {
-    if (useLocalStorage()) return _Persistore.window().localStorage.setItem(name, value);
+const _set = (local: boolean) => (name: string, value: string): void => {
+    if (useStorage(local)) return _Persistore.storage(local).setItem(name, value);
     if (useCookies()) return CookieUtil.set(name, value);
     _Persistore.variables().store[name] = value;
 };
 
-const get = (name: string): string | void => {
-    if (useLocalStorage()) return _Persistore.window().localStorage.getItem(name) || undefined;
+const _get = (local: boolean) => (name: string): string | void => {
+    if (useStorage(local)) return _Persistore.storage(local).getItem(name) || undefined;
     if (useCookies()) return CookieUtil.get(name);
     return _Persistore.variables().store[name];
 };
 
-const remove = (name: string): void => {
-    if (useLocalStorage()) return _Persistore.window().localStorage.removeItem(name);
+const _remove = (local: boolean) => (name: string): void => {
+    if (useStorage(local)) return _Persistore.storage(local).removeItem(name);
     if (useCookies()) return CookieUtil.remove(name);
     delete _Persistore.variables().store[name];
 };
 
-export const Persistore = { get, set, remove };
+export const Persistore = {
+    set: _set(true),
+    get: _get(true),
+    remove: _remove(true),
+    session: {
+        set: _set(false),
+        get: _get(false),
+        remove: _remove(false),
+    },
+};
