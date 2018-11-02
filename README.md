@@ -53,6 +53,14 @@ The actual browser behaviour in that case would be to silently do nothing, what 
 Therefore you should catch the possibly thrown error if you want to store large strings to handle this special case.
 Another useful information for you might be: localStorage and sessionStorage are not available on some browsers. The
 most common cases are iOS-Safari-Private-Mode users, where the Persistore will always fallback to cookies.
+
+### Configuration
+It is also possible to make some configuration. For now it is only the key prefixing.
+```js
+import { Persistore } from 'persistore';
+
+Persistore.config({ prefix: 'myApp.' });
+```
   
 [license-image]: https://img.shields.io/badge/license-MIT-blue.svg
 [license-url]: https://github.com/fdc-viktor-luft/persistore/blob/master/LICENSE

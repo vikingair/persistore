@@ -7,6 +7,7 @@ describe('Persistore - VariableProvider', () => {
     it('returns the variables by the provider', () => {
         expect(_Persistore.variables()).toEqual({
             store: {},
+            prefix: '',
         });
         expect(_Persistore.document()).toBe(window.document);
         expect(_Persistore.storage(true)).toBe(window.localStorage);
@@ -14,7 +15,15 @@ describe('Persistore - VariableProvider', () => {
     });
 });
 
-describe('Persistore - useLocalStorage', () => {
+describe('Persistore.config', () => {
+    it('configures the prefix', () => {
+        expect(_Persistore.variables().prefix).toBe('');
+        Persistore.config({ prefix: 'foo-' });
+        expect(_Persistore.variables().prefix).toBe('foo-');
+    });
+});
+
+describe('Persistore - localStorageAvailable', () => {
     let localStorageMock: Object = {};
     let localVariables: Object = {};
     beforeEach(() => {
@@ -30,30 +39,30 @@ describe('Persistore - useLocalStorage', () => {
             throw new Error('Testing local storage');
         });
     });
-    it('sets the localVariables.useLocalStorage to true if everything works fine', () => {
+    it('sets the localVariables.lsa to true if everything works fine', () => {
         expect(useStorage(true)).toBe(true);
 
         localStorageMock.getItem.wasNotCalled();
-        localStorageMock.setItem.wasCalledWith('__storage_test__', '__storage_test__');
-        localStorageMock.removeItem.wasCalledWith('__storage_test__');
-        expect(localVariables.useLocalStorage).toBe(true);
+        localStorageMock.setItem.wasCalledWith('__test__', '__test__');
+        localStorageMock.removeItem.wasCalledWith('__test__');
+        expect(localVariables.lsa).toBe(true);
     });
 
-    it('sets the localVariables.useLocalStorage to false if any exception occurs', () => {
+    it('sets the localVariables.lsa to false if any exception occurs', () => {
         localStorageMock.setItem.throws('no way!');
         expect(useStorage(true)).toBe(false);
 
         localStorageMock.getItem.wasNotCalled();
-        localStorageMock.setItem.wasCalledWith('__storage_test__', '__storage_test__');
+        localStorageMock.setItem.wasCalledWith('__test__', '__test__');
         localStorageMock.removeItem.wasNotCalled();
-        expect(localVariables.useLocalStorage).toBe(false);
+        expect(localVariables.lsa).toBe(false);
     });
 
-    it('does not retest localStorage availability if localVariables.useLocalStorage is true/false', () => {
-        localVariables.useLocalStorage = true;
+    it('does not retest localStorage availability if localVariables.lsa is true/false', () => {
+        localVariables.lsa = true;
         expect(useStorage(true)).toBe(true);
 
-        localVariables.useLocalStorage = false;
+        localVariables.lsa = false;
         expect(useStorage(true)).toBe(false);
 
         localStorageMock.getItem.wasNotCalled();
@@ -62,7 +71,7 @@ describe('Persistore - useLocalStorage', () => {
     });
 });
 
-describe('Persistore - useSessionStorage', () => {
+describe('Persistore - sessionStorageAvailable', () => {
     let sessionStorageMock: Object = {};
     let localVariables: Object = {};
     beforeEach(() => {
@@ -78,30 +87,30 @@ describe('Persistore - useSessionStorage', () => {
             throw new Error('Testing local storage');
         });
     });
-    it('sets the localVariables.useLocalStorage to true if everything works fine', () => {
+    it('sets the localVariables.ssa to true if everything works fine', () => {
         expect(useStorage(false)).toBe(true);
 
         sessionStorageMock.getItem.wasNotCalled();
-        sessionStorageMock.setItem.wasCalledWith('__storage_test__', '__storage_test__');
-        sessionStorageMock.removeItem.wasCalledWith('__storage_test__');
-        expect(localVariables.useSessionStorage).toBe(true);
+        sessionStorageMock.setItem.wasCalledWith('__test__', '__test__');
+        sessionStorageMock.removeItem.wasCalledWith('__test__');
+        expect(localVariables.ssa).toBe(true);
     });
 
-    it('sets the localVariables.useSessionStorage to false if any exception occurs', () => {
+    it('sets the localVariables.ssa to false if any exception occurs', () => {
         sessionStorageMock.setItem.throws('no way!');
         expect(useStorage(false)).toBe(false);
 
         sessionStorageMock.getItem.wasNotCalled();
-        sessionStorageMock.setItem.wasCalledWith('__storage_test__', '__storage_test__');
+        sessionStorageMock.setItem.wasCalledWith('__test__', '__test__');
         sessionStorageMock.removeItem.wasNotCalled();
-        expect(localVariables.useSessionStorage).toBe(false);
+        expect(localVariables.ssa).toBe(false);
     });
 
-    it('does not retest sessionStorage availability if localVariables.useSessionStorage is true/false', () => {
-        localVariables.useSessionStorage = true;
+    it('does not retest sessionStorage availability if localVariables.ssa is true/false', () => {
+        localVariables.ssa = true;
         expect(useStorage(false)).toBe(true);
 
-        localVariables.useSessionStorage = false;
+        localVariables.ssa = false;
         expect(useStorage(false)).toBe(false);
 
         sessionStorageMock.getItem.wasNotCalled();
@@ -110,7 +119,7 @@ describe('Persistore - useSessionStorage', () => {
     });
 });
 
-describe('Persistore - useCookies', () => {
+describe('Persistore - cookiesAvailable', () => {
     let documentMock: Object = {};
     let localVariables: Object = {};
     let cookieUtilMock: Object = {};
@@ -131,7 +140,7 @@ describe('Persistore - useCookies', () => {
             remove: removeCookieSpy,
         };
     });
-    it('sets the localVariables.useCookies to true if everything works fine', () => {
+    it('sets the localVariables.ca to true if everything works fine', () => {
         cookieUtilMock.set.calls((name, val) => {
             documentMock.cookie = `${name}=${val}`;
         });
@@ -141,29 +150,29 @@ describe('Persistore - useCookies', () => {
         expect(useCookies()).toBe(true);
 
         cookieUtilMock.set.wasCalled(1);
-        cookieUtilMock.set.wasCalledWith('__cookie_test__', '__cookie_test__');
+        cookieUtilMock.set.wasCalledWith('__test__', '__test__');
         cookieUtilMock.remove.wasCalled(1);
-        cookieUtilMock.remove.wasCalledWith('__cookie_test__');
+        cookieUtilMock.remove.wasCalledWith('__test__');
         cookieUtilMock.get.wasNotCalled();
-        expect(localVariables.useCookies).toBe(true);
+        expect(localVariables.ca).toBe(true);
     });
 
-    it('sets the localVariables.useCookies to false if any exception occurs', () => {
+    it('sets the localVariables.ca to false if any exception occurs', () => {
         cookieUtilMock.set.throws('no way!');
         expect(useCookies()).toBe(false);
 
         cookieUtilMock.set.wasCalled(1);
-        cookieUtilMock.set.wasCalledWith('__cookie_test__', '__cookie_test__');
+        cookieUtilMock.set.wasCalledWith('__test__', '__test__');
         cookieUtilMock.remove.wasNotCalled();
         cookieUtilMock.get.wasNotCalled();
-        expect(localVariables.useCookies).toBe(false);
+        expect(localVariables.ca).toBe(false);
     });
 
-    it('does not retest cookie availability if localVariables.useCookies is true/false', () => {
-        localVariables.useCookies = true;
+    it('does not retest cookie availability if localVariables.ca is true/false', () => {
+        localVariables.ca = true;
         expect(useCookies()).toBe(true);
 
-        localVariables.useCookies = false;
+        localVariables.ca = false;
         expect(useCookies()).toBe(false);
 
         cookieUtilMock.set.wasNotCalled();
@@ -223,9 +232,10 @@ describe('Persistore', () => {
         };
         localVariables = {
             store: {},
-            useLocalStorage: false,
-            useSessionStorage: false,
-            useCookies: false,
+            prefix: 'test.',
+            lsa: false,
+            ssa: false,
+            ca: false,
         };
         Spy.on(_Persistore, 'variables').returns(localVariables);
         Spy.on(_Persistore, 'storage').calls(local => {
@@ -245,46 +255,46 @@ describe('Persistore', () => {
         };
     });
     it('sets the item to local storage', () => {
-        localVariables.useLocalStorage = true;
+        localVariables.lsa = true;
         Persistore.set('myName', 'myValue');
-        localStorageMock.setItem.wasCalledWith('myName', 'myValue');
+        localStorageMock.setItem.wasCalledWith('test.myName', 'myValue');
         cookieUtilMock.set.wasNotCalled();
-        expect(localVariables.store.myName).toBe(undefined);
+        expect(localVariables.store['test.myName']).toBe(undefined);
     });
     it('sets the item to cookie', () => {
-        localVariables.useCookies = true;
+        localVariables.ca = true;
         Persistore.set('myName', 'myValue');
         localStorageMock.setItem.wasNotCalled();
-        cookieUtilMock.set.wasCalledWith('myName', 'myValue');
-        expect(localVariables.store.myName).toBe(undefined);
+        cookieUtilMock.set.wasCalledWith('test.myName', 'myValue');
+        expect(localVariables.store['test.myName']).toBe(undefined);
     });
     it('sets the item to local variable', () => {
         Persistore.set('myName', 'myValue');
         localStorageMock.setItem.wasNotCalled();
         cookieUtilMock.set.wasNotCalled();
-        expect(localVariables.store.myName).toBe('myValue');
+        expect(localVariables.store['test.myName']).toBe('myValue');
     });
     it('gets the item from local storage', () => {
-        localVariables.useLocalStorage = true;
+        localVariables.lsa = true;
         localStorageMock.getItem.returns('myValue', null);
 
         expect(Persistore.get('myName')).toBe('myValue');
         expect(Persistore.get('myName2')).toBe(undefined);
 
-        localStorageMock.getItem.hasCallHistory([['myName'], ['myName2']]);
+        localStorageMock.getItem.hasCallHistory('test.myName', 'test.myName2');
         cookieUtilMock.get.wasNotCalled();
     });
     it('gets the item from cookie', () => {
-        localVariables.useCookies = true;
+        localVariables.ca = true;
         cookieUtilMock.get.returns('myValue');
 
         expect(Persistore.get('myName')).toBe('myValue');
 
         localStorageMock.getItem.wasNotCalled();
-        cookieUtilMock.get.wasCalledWith('myName');
+        cookieUtilMock.get.wasCalledWith('test.myName');
     });
     it('gets the item from local variable', () => {
-        localVariables.store.myName = 'myValue';
+        localVariables.store['test.myName'] = 'myValue';
 
         expect(Persistore.get('myName')).toBe('myValue');
 
@@ -292,33 +302,33 @@ describe('Persistore', () => {
         cookieUtilMock.get.wasNotCalled();
     });
     it('removes the item from local storage', () => {
-        localVariables.useLocalStorage = true;
-        localVariables.store.myName = 'myValue';
+        localVariables.lsa = true;
+        localVariables.store['test.myName'] = 'myValue';
 
         Persistore.remove('myName');
 
-        localStorageMock.removeItem.wasCalledWith('myName');
+        localStorageMock.removeItem.wasCalledWith('test.myName');
         cookieUtilMock.remove.wasNotCalled();
-        expect(localVariables.store.myName).toBe('myValue');
+        expect(localVariables.store['test.myName']).toBe('myValue');
     });
     it('removes the item from cookie', () => {
-        localVariables.useCookies = true;
-        localVariables.store.myName = 'myValue';
+        localVariables.ca = true;
+        localVariables.store['test.myName'] = 'myValue';
 
         Persistore.remove('myName');
 
         localStorageMock.removeItem.wasNotCalled();
-        cookieUtilMock.remove.wasCalledWith('myName');
-        expect(localVariables.store.myName).toBe('myValue');
+        cookieUtilMock.remove.wasCalledWith('test.myName');
+        expect(localVariables.store['test.myName']).toBe('myValue');
     });
     it('removes the item from local variable', () => {
-        localVariables.store.myName = 'myValue';
+        localVariables.store['test.myName'] = 'myValue';
 
         Persistore.remove('myName');
 
         localStorageMock.removeItem.wasNotCalled();
         cookieUtilMock.remove.wasNotCalled();
-        expect(localVariables.store.myName).toBe(undefined);
+        expect(localVariables.store['test.myName']).toBe(undefined);
     });
 });
 
@@ -334,9 +344,10 @@ describe('Persistore.session', () => {
         };
         localVariables = {
             store: {},
-            useLocalStorage: false,
-            useSessionStorage: false,
-            useCookies: false,
+            prefix: '',
+            lsa: false,
+            ssa: false,
+            ca: false,
         };
         Spy.on(_Persistore, 'variables').returns(localVariables);
         Spy.on(_Persistore, 'storage').calls(local => {
@@ -355,15 +366,15 @@ describe('Persistore.session', () => {
             remove: removeCookieSpy,
         };
     });
-    it('sets the item to local storage', () => {
-        localVariables.useSessionStorage = true;
+    it('sets the item to session storage', () => {
+        localVariables.ssa = true;
         Persistore.session.set('myName', 'myValue');
         sessionStorageMock.setItem.wasCalledWith('myName', 'myValue');
         cookieUtilMock.set.wasNotCalled();
         expect(localVariables.store.myName).toBe(undefined);
     });
     it('sets the item to cookie', () => {
-        localVariables.useCookies = true;
+        localVariables.ca = true;
         Persistore.session.set('myName', 'myValue');
         sessionStorageMock.setItem.wasNotCalled();
         cookieUtilMock.set.wasCalledWith('myName', 'myValue');
@@ -375,18 +386,18 @@ describe('Persistore.session', () => {
         cookieUtilMock.set.wasNotCalled();
         expect(localVariables.store.myName).toBe('myValue');
     });
-    it('gets the item from local storage', () => {
-        localVariables.useSessionStorage = true;
+    it('gets the item from session storage', () => {
+        localVariables.ssa = true;
         sessionStorageMock.getItem.returns('myValue', null);
 
         expect(Persistore.session.get('myName')).toBe('myValue');
         expect(Persistore.session.get('myName2')).toBe(undefined);
 
-        sessionStorageMock.getItem.hasCallHistory([['myName'], ['myName2']]);
+        sessionStorageMock.getItem.hasCallHistory('myName', 'myName2');
         cookieUtilMock.get.wasNotCalled();
     });
     it('gets the item from cookie', () => {
-        localVariables.useCookies = true;
+        localVariables.ca = true;
         cookieUtilMock.get.returns('myValue');
 
         expect(Persistore.session.get('myName')).toBe('myValue');
@@ -402,8 +413,8 @@ describe('Persistore.session', () => {
         sessionStorageMock.getItem.wasNotCalled();
         cookieUtilMock.get.wasNotCalled();
     });
-    it('removes the item from local storage', () => {
-        localVariables.useSessionStorage = true;
+    it('removes the item from session storage', () => {
+        localVariables.ssa = true;
         localVariables.store.myName = 'myValue';
 
         Persistore.session.remove('myName');
@@ -413,7 +424,7 @@ describe('Persistore.session', () => {
         expect(localVariables.store.myName).toBe('myValue');
     });
     it('removes the item from cookie', () => {
-        localVariables.useCookies = true;
+        localVariables.ca = true;
         localVariables.store.myName = 'myValue';
 
         Persistore.session.remove('myName');

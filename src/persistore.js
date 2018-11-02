@@ -1,12 +1,14 @@
 // @flow
 
 const variables: {
-    useLocalStorage?: boolean,
-    useSessionStorage?: boolean,
-    useCookies?: boolean,
+    lsa?: boolean, // local storage available
+    ssa?: boolean, // session storage available
+    ca?: boolean, // cookies available
     store: Object,
+    prefix: string,
 } = {
     store: {},
+    prefix: '',
 };
 
 export const _Persistore = {
@@ -17,11 +19,11 @@ export const _Persistore = {
 
 export const useStorage = (local: boolean): boolean => {
     const lv = _Persistore.variables();
-    const isAvailable = local ? 'useLocalStorage' : 'useSessionStorage';
+    const isAvailable = local ? 'lsa' : 'ssa';
     if (lv[isAvailable] === undefined) {
         try {
             const storage = _Persistore.storage(local);
-            const x = '__storage_test__';
+            const x = '__test__';
             storage.setItem(x, x);
             storage.removeItem(x);
             lv[isAvailable] = true;
@@ -73,39 +75,45 @@ export const CookieUtil = {
 
 export const useCookies = (): boolean => {
     const lv = _Persistore.variables();
-    if (lv.useCookies === undefined) {
+    if (lv.ca === undefined) {
         try {
             const document = _Persistore.document();
-            const x = '__cookie_test__';
+            const x = '__test__';
             CookieUtil.set(x, x);
-            lv.useCookies = document.cookie.indexOf(x) !== -1;
+            lv.ca = document.cookie.indexOf(x) !== -1;
             CookieUtil.remove(x);
-            lv.useCookies = lv.useCookies && document.cookie.indexOf(x) === -1;
+            lv.ca = lv.ca && document.cookie.indexOf(x) === -1;
         } catch (e) {
-            lv.useCookies = false;
+            lv.ca = false;
         }
     }
-
-    return Boolean(lv.useCookies);
+    return (lv.ca: any);
 };
 
+const _prefixed = (name: string): string => _Persistore.variables().prefix + name;
+
 const _set = (local: boolean) => (name: string, value: string): void => {
-    if (useStorage(local)) return _Persistore.storage(local).setItem(name, value);
-    if (useCookies()) return CookieUtil.set(name, value);
-    _Persistore.variables().store[name] = value;
+    const key = _prefixed(name);
+    if (useStorage(local)) return _Persistore.storage(local).setItem(key, value);
+    if (useCookies()) return CookieUtil.set(key, value);
+    _Persistore.variables().store[key] = value;
 };
 
 const _get = (local: boolean) => (name: string): string | void => {
-    if (useStorage(local)) return _Persistore.storage(local).getItem(name) || undefined;
-    if (useCookies()) return CookieUtil.get(name);
-    return _Persistore.variables().store[name];
+    const key = _prefixed(name);
+    if (useStorage(local)) return _Persistore.storage(local).getItem(key) || undefined;
+    if (useCookies()) return CookieUtil.get(key);
+    return _Persistore.variables().store[key];
 };
 
 const _remove = (local: boolean) => (name: string): void => {
-    if (useStorage(local)) return _Persistore.storage(local).removeItem(name);
-    if (useCookies()) return CookieUtil.remove(name);
-    delete _Persistore.variables().store[name];
+    const key = _prefixed(name);
+    if (useStorage(local)) return _Persistore.storage(local).removeItem(key);
+    if (useCookies()) return CookieUtil.remove(key);
+    delete _Persistore.variables().store[key];
 };
+
+const config = ({ prefix }: { prefix: string }) => (variables.prefix = prefix);
 
 export const Persistore = {
     set: _set(true),
@@ -116,4 +124,5 @@ export const Persistore = {
         get: _get(false),
         remove: _remove(false),
     },
+    config,
 };
