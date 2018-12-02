@@ -24,14 +24,13 @@ describe('Persistore.config', () => {
 });
 
 describe('Persistore - localStorageAvailable', () => {
-    let localStorageMock: Object = {};
+    const localStorageMock = {
+        getItem: new Spy('localStorage.getItem - Spy'),
+        setItem: new Spy('localStorage.setItem - Spy'),
+        removeItem: new Spy('localStorage.removeItem - Spy'),
+    };
     let localVariables: Object = {};
     beforeEach(() => {
-        localStorageMock = {
-            getItem: new Spy('localStorage.getItem - Spy'),
-            setItem: new Spy('localStorage.setItem - Spy'),
-            removeItem: new Spy('localStorage.removeItem - Spy'),
-        };
         localVariables = { store: {} };
         Access$Mock.variables.returns(localVariables);
         Access$Mock.storage.calls(local => {
@@ -72,14 +71,13 @@ describe('Persistore - localStorageAvailable', () => {
 });
 
 describe('Persistore - sessionStorageAvailable', () => {
-    let sessionStorageMock: Object = {};
+    const sessionStorageMock = {
+        getItem: new Spy('sessionStorage.getItem - Spy'),
+        setItem: new Spy('sessionStorage.setItem - Spy'),
+        removeItem: new Spy('sessionStorage.removeItem - Spy'),
+    };
     let localVariables: Object = {};
     beforeEach(() => {
-        sessionStorageMock = {
-            getItem: new Spy('sessionStorage.getItem - Spy'),
-            setItem: new Spy('sessionStorage.setItem - Spy'),
-            removeItem: new Spy('sessionStorage.removeItem - Spy'),
-        };
         localVariables = { store: {} };
         Access$Mock.variables.returns(localVariables);
         Access$Mock.storage.calls(local => {
@@ -170,14 +168,13 @@ describe('Persistore - cookiesAvailable', () => {
 });
 
 describe('Persistore', () => {
-    let localStorageMock: Object = {};
+    const localStorageMock = {
+        getItem: new Spy('localStorage.getItem - Spy'),
+        setItem: new Spy('localStorage.setItem - Spy'),
+        removeItem: new Spy('localStorage.removeItem - Spy'),
+    };
     let localVariables: Object = {};
     beforeEach(() => {
-        localStorageMock = {
-            getItem: new Spy('localStorage.getItem - Spy'),
-            setItem: new Spy('localStorage.setItem - Spy'),
-            removeItem: new Spy('localStorage.removeItem - Spy'),
-        };
         localVariables = {
             store: {},
             prefix: 'test.',
@@ -270,14 +267,13 @@ describe('Persistore', () => {
 });
 
 describe('Persistore.session', () => {
-    let sessionStorageMock: Object = {};
+    const sessionStorageMock = {
+        getItem: new Spy('sessionStorage.getItem - Spy'),
+        setItem: new Spy('sessionStorage.setItem - Spy'),
+        removeItem: new Spy('sessionStorage.removeItem - Spy'),
+    };
     let localVariables: Object = {};
     beforeEach(() => {
-        sessionStorageMock = {
-            getItem: new Spy('sessionStorage.getItem - Spy'),
-            setItem: new Spy('sessionStorage.setItem - Spy'),
-            removeItem: new Spy('sessionStorage.removeItem - Spy'),
-        };
         localVariables = {
             store: {},
             prefix: '',

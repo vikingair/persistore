@@ -50,7 +50,7 @@
     "flow-bin": "^0.74.0",
     "jest": "^23.1.0",
     "prettier": "1.7.4",
-    "spy4js": "^2.0.0"
+    "spy4js": "^2.2.0"
   },
   "jest": {
     "collectCoverageFrom": [
