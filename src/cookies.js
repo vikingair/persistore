@@ -10,7 +10,7 @@ import { Access } from './access';
 
 // it is very important that deleting and setting cookies is performed
 // on the same cookie location
-const cookieLocation = 'Secure;Path=/;SameSite=strict';
+const cookieLocation = 'Path=/;SameSite=strict';
 const MAX_COOKIE_LENGTH = 4093;
 
 const set = (name: string, value: string): void => {

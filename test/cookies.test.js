@@ -19,7 +19,7 @@ describe('Cookies', () => {
     });
     it('sets the cookie with value', () => {
         Cookies.set('myCookie', '+myValue?');
-        expect(documentMock.cookie).toBe('myCookie=%2BmyValue%3F;Secure;Path=/;SameSite=strict');
+        expect(documentMock.cookie).toBe('myCookie=%2BmyValue%3F;Path=/;SameSite=strict');
     });
     it('throws an error if cookie is exceeding max cookie length', () => {
         const generate13Digits = () =>
@@ -28,7 +28,7 @@ describe('Cookies', () => {
         try {
             Cookies.set('myCookie', JSON.stringify(arrayWithNumbers));
         } catch (e) {
-            expect(e.message).toBe('Unable to set cookie. Cookie string is to long (4442 > 4093).');
+            expect(e.message).toBe('Unable to set cookie. Cookie string is to long (4435 > 4093).');
             return;
         }
         expect(true).toBe(false); // we do not reach this point
@@ -36,7 +36,7 @@ describe('Cookies', () => {
     it('removes the cookie with value', () => {
         Cookies.remove('myCookie');
         expect(documentMock.cookie).toBe(
-            'myCookie=; expires=Thu, 01 Jan 1970 00:00:01 GMT;Secure;Path=/;SameSite=strict'
+            'myCookie=; expires=Thu, 01 Jan 1970 00:00:01 GMT;Path=/;SameSite=strict'
         );
     });
     it('accesses the cookie with value', () => {
