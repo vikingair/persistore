@@ -1,6 +1,6 @@
 {
   "name": "persistore",
-  "version": "1.3.2",
+  "version": "1.4.0",
   "description": "Automatically applying persistent storage with fallback strategies",
   "main": "dist/persistore.js",
   "files": [

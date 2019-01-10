@@ -66,7 +66,10 @@ const _remove = (local: boolean) => (name: string): void => {
     delete Access.variables().store[key];
 };
 
-const config = ({ prefix }: { prefix: string }) => (Access.variables().prefix = prefix);
+const config = ({ prefix, insecure }: { prefix?: string, insecure?: boolean }) => {
+    prefix !== undefined && (Access.variables().prefix = prefix);
+    insecure !== undefined && (Access.variables().ci = insecure);
+};
 
 export const Persistore = {
     set: _set(true),

@@ -20,6 +20,21 @@ describe('Persistore.config', () => {
         expect(Access.variables().prefix).toBe('');
         Persistore.config({ prefix: 'foo-' });
         expect(Access.variables().prefix).toBe('foo-');
+        Persistore.config({ prefix: undefined });
+        expect(Access.variables().prefix).toBe('foo-');
+        Persistore.config({ prefix: '' });
+        expect(Access.variables().prefix).toBe('');
+    });
+
+    it('configures the insecure cookies', () => {
+        Access$Mock.variables.transparent();
+        expect(Access.variables().ci).toBe(undefined);
+        Persistore.config({ insecure: true });
+        expect(Access.variables().ci).toBe(true);
+        Persistore.config({ insecure: undefined });
+        expect(Access.variables().ci).toBe(true);
+        Persistore.config({ insecure: false });
+        expect(Access.variables().ci).toBe(false);
     });
 });
 

@@ -10,12 +10,12 @@ import { Access } from './access';
 
 // it is very important that deleting and setting cookies is performed
 // on the same cookie location
-const cookieLocation = 'Path=/;SameSite=strict';
+const cookieLocation = () => (Access.variables().ci ? '' : 'Secure;') + 'Path=/;SameSite=strict';
 const MAX_COOKIE_LENGTH = 4093;
 
 const set = (name: string, value: string): void => {
     const encodedValue = encodeURIComponent(value);
-    const cookie = `${name}=${encodedValue};${cookieLocation}`;
+    const cookie = `${name}=${encodedValue};${cookieLocation()}`;
     if (cookie.length > MAX_COOKIE_LENGTH)
         throw new Error(
             `Unable to set cookie. Cookie string is to long (${cookie.length} > ${MAX_COOKIE_LENGTH}).`
@@ -24,7 +24,7 @@ const set = (name: string, value: string): void => {
 };
 
 const remove = (name: string): void => {
-    Access.document().cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:01 GMT;${cookieLocation}`;
+    Access.document().cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:01 GMT;${cookieLocation()}`;
 };
 
 type CookieNameValuePairs = Array<Array<string>>;

@@ -14,7 +14,7 @@ persistent as possible in this situation without any backend support.
 ### Some aspects
 - `flow` support out-of-the-box
 - coverage of 100% is mandatory
-- < 0.8 kB (gzipped) (see [bundlephobia](https://bundlephobia.com/result?p=persistore))
+- < 0.95 kB (gzipped) (see [bundlephobia](https://bundlephobia.com/result?p=persistore))
 - any issues will be fixed as soon as possible
 
 ### Installation
@@ -55,11 +55,11 @@ Another useful information for you might be: localStorage and sessionStorage are
 most common cases are iOS-Safari-Private-Mode users, where the Persistore will always fallback to cookies.
 
 ### Configuration
-It is also possible to make some configuration. For now it is only the key prefixing.
+It is also possible to make some configuration. For now it is only the key prefixing and an opt-out for secure cookies (useful for localhost development).
 ```js
 import { Persistore } from 'persistore';
 
-Persistore.config({ prefix: 'myApp.' });
+Persistore.config({ prefix: 'myApp.', insecure: IS_LOCALHOST });
 ```
   
 [license-image]: https://img.shields.io/badge/license-MIT-blue.svg

@@ -10,6 +10,7 @@ const variables: {
     lsa?: boolean, // local storage available
     ssa?: boolean, // session storage available
     ca?: boolean, // cookies available
+    ci?: boolean, // cookies insecure
     store: Object,
     prefix: string,
 } = {
