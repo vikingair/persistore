@@ -1,10 +1,10 @@
 {
   "name": "persistore",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "Automatically applying persistent storage with fallback strategies",
   "main": "dist/cjs/persistore.js",
   "module": "dist/esm/persistore.js",
-  "types": "src/persistore.js",
+  "types": "src/persistore.d.ts",
   "files": [
     "dist/cjs",
     "dist/esm",

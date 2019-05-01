@@ -1,3 +1,7 @@
+/**
+ * This project was created with flow. Flow will ignore the TypeScript types.
+ * But you can find a copy of the source code directly next to this file.
+ */
 const Setter = (name: string, value: string) => undefined;
 const Getter = (name: string) => string | undefined;
 const Remover = (name: string) => undefined;
