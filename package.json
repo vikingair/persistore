@@ -1,14 +1,18 @@
 {
   "name": "persistore",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Automatically applying persistent storage with fallback strategies",
-  "main": "dist/persistore.js",
+  "main": "dist/cjs/persistore.js",
+  "module": "dist/esm/persistore.js",
+  "types": "src/persistore.js",
   "files": [
-    "dist"
+    "dist/cjs",
+    "dist/esm",
+    "src"
   ],
   "scripts": {
-    "dist": "rm -rf dist && babel src --out-dir dist && for i in `ls src/`; do cp src/$i dist/$i.flow; done",
-    "eslint": "eslint src/ test/",
+    "dist": "rm -rf dist && rollup -c",
+    "eslint": "eslint --cache --cache-location 'build/.eslintcache' src/ test/",
     "flow": "flow --quiet",
     "test": "yarn run flow && yarn run eslint && yarn run test-coverage",
     "test-coverage": "jest --all --coverage",
@@ -31,65 +35,24 @@
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.3",
-    "babel-eslint": "^8.2.4",
-    "babel-jest": "^23.0.1",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-flow": "^6.23.0",
-    "coveralls": "^3.0.0",
-    "eslint": "^5.0.0",
-    "eslint-config-prettier": "^2.9.0",
-    "eslint-plugin-flowtype": "^2.49.3",
-    "eslint-plugin-import": "^2.12.0",
-    "eslint-plugin-prettier": "^2.6.1",
-    "eslint-plugin-react": "^7.9.1",
-    "flow-bin": "^0.74.0",
-    "jest": "^23.1.0",
-    "prettier": "1.7.4",
-    "spy4js": "^2.2.0"
-  },
-  "jest": {
-    "collectCoverageFrom": [
-      "src/**/*.js"
-    ],
-    "coverageReporters": [
-      "lcov"
-    ],
-    "coverageThreshold": {
-      "global": {
-        "statements": 100,
-        "branches": 100,
-        "functions": 100,
-        "lines": 100
-      }
-    }
-  },
-  "babel": {
-    "comments": false,
-    "presets": [
-      "env",
-      "flow"
-    ],
-    "plugins": [
-      "transform-class-properties",
-      [
-        "transform-runtime",
-        {
-          "polyfill": false,
-          "helpers": false,
-          "regenerator": true
-        }
-      ],
-      [
-        "transform-object-rest-spread",
-        {
-          "useBuiltIns": true
-        }
-      ]
-    ]
+    "@babel/core": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "@babel/preset-flow": "^7.0.0",
+    "babel-eslint": "^10.0.1",
+    "babel-jest": "^24.7.1",
+    "coveralls": "^3.0.3",
+    "eslint": "^5.16.0",
+    "eslint-config-prettier": "^4.2.0",
+    "eslint-plugin-flowtype": "^3.6.1",
+    "eslint-plugin-prettier": "^3.0.1",
+    "flow-bin": "^0.98.0",
+    "jest": "^24.7.1",
+    "prettier": "^1.17.0",
+    "rollup": "^1.10.1",
+    "rollup-plugin-babel": "^4.3.2",
+    "rollup-plugin-commonjs": "^9.3.4",
+    "rollup-plugin-flow-entry": "^0.3.1",
+    "rollup-plugin-node-resolve": "^4.2.3",
+    "spy4js": "^2.3.3"
   }
 }

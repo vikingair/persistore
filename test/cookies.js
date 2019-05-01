@@ -20,16 +20,24 @@ describe('Cookies', () => {
     });
     it('sets the cookie with value', () => {
         Cookies.set('myCookie', '+myValue?');
-        expect(documentMock.cookie).toBe('myCookie=%2BmyValue%3F;Secure;Path=/;SameSite=strict');
+        expect(documentMock.cookie).toBe(
+            'myCookie=%2BmyValue%3F;Secure;Path=/;SameSite=strict'
+        );
     });
     it('throws an error if cookie is exceeding max cookie length', () => {
         const generate13Digits = () =>
-            String([1e12]).replace(/0/g, () => String(Math.floor(Math.random() * 10)));
-        const arrayWithNumbers = Array.apply(null, ({ length: 200 }: any)).map(generate13Digits);
+            String([1e12]).replace(/0/g, () =>
+                String(Math.floor(Math.random() * 10))
+            );
+        const arrayWithNumbers = Array.apply(null, ({ length: 200 }: any)).map(
+            generate13Digits
+        );
         try {
             Cookies.set('myCookie', JSON.stringify(arrayWithNumbers));
         } catch (e) {
-            expect(e.message).toBe('Unable to set cookie. Cookie string is to long (4442 > 4093).');
+            expect(e.message).toBe(
+                'Unable to set cookie. Cookie string is to long (4442 > 4093).'
+            );
             return;
         }
         expect(true).toBe(false); // we do not reach this point
@@ -47,12 +55,15 @@ describe('Cookies', () => {
         expect(Cookies.get('myCookie')).toBe('+myValue?');
     });
     it('returns undefined if cookie does not exist', () => {
-        documentMock.cookie = 'someCookieHere=andThisValue; andSoOn=yeah;  foo=bar;';
+        documentMock.cookie =
+            'someCookieHere=andThisValue; andSoOn=yeah;  foo=bar;';
         expect(Cookies.get('myCookie')).toBe(undefined);
     });
     it('sets insecure cookie with value', () => {
         Access$Mock.variables.returns({ ci: true });
         Cookies.set('myCookie', '+myValue?');
-        expect(documentMock.cookie).toBe('myCookie=%2BmyValue%3F;Path=/;SameSite=strict');
+        expect(documentMock.cookie).toBe(
+            'myCookie=%2BmyValue%3F;Path=/;SameSite=strict'
+        );
     });
 });

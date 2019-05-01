@@ -20,6 +20,7 @@ const variables: {
 
 export const Access = {
     variables: () => variables,
-    storage: (local: boolean) => (local ? window.localStorage : window.sessionStorage),
+    storage: (local: boolean) =>
+        local ? window.localStorage : window.sessionStorage,
     document: () => window.document,
 };

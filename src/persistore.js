@@ -54,7 +54,8 @@ const _set = (local: boolean) => (name: string, value: string): void => {
 
 const _get = (local: boolean) => (name: string): string | void => {
     const key = _prefixed(name);
-    if (useStorage(local)) return Access.storage(local).getItem(key) || undefined;
+    if (useStorage(local))
+        return Access.storage(local).getItem(key) || undefined;
     if (useCookies()) return Cookies.get(key);
     return Access.variables().store[key];
 };
@@ -66,7 +67,13 @@ const _remove = (local: boolean) => (name: string): void => {
     delete Access.variables().store[key];
 };
 
-const config = ({ prefix, insecure }: { prefix?: string, insecure?: boolean }) => {
+const config = ({
+    prefix,
+    insecure,
+}: {
+    prefix?: string,
+    insecure?: boolean,
+}) => {
     prefix !== undefined && (Access.variables().prefix = prefix);
     insecure !== undefined && (Access.variables().ci = insecure);
 };
