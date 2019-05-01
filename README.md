@@ -12,9 +12,10 @@ And if this would be neither possible, it will just use local variables, which i
 persistent as possible in this situation without any backend support.
 
 ### Some aspects
-- `flow` support out-of-the-box
+- `flow` support included
+- `typescript` support included
 - coverage of 100% is mandatory
-- < 0.95 kB (gzipped) (see [bundlephobia](https://bundlephobia.com/result?p=persistore))
+- < 0.85 kB (gzipped) (see [bundlephobia](https://bundlephobia.com/result?p=persistore))
 - any issues will be fixed as soon as possible
 
 ### Installation
