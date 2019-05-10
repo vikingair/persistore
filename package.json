@@ -1,6 +1,6 @@
 {
   "name": "persistore",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "description": "Automatically applying persistent storage with fallback strategies",
   "main": "dist/cjs/persistore.js",
   "module": "dist/esm/persistore.js",
@@ -53,6 +53,6 @@
     "rollup-plugin-commonjs": "^9.3.4",
     "rollup-plugin-flow-entry": "^0.3.1",
     "rollup-plugin-node-resolve": "^4.2.3",
-    "spy4js": "^2.3.3"
+    "spy4js": "^2.4.0"
   }
 }

@@ -4119,10 +4119,10 @@ sprintf-js@~1.0.2:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/sprintf-js/-/sprintf-js-1.0.3.tgz#04e6926f662895354f3dd015203633b857297e2c"
 
-spy4js@^2.3.3:
-  version "2.3.3"
-  resolved "https://registry.yarnpkg.com/spy4js/-/spy4js-2.3.3.tgz#60ec4f45c7929eb3e64a613f563703f118680fcf"
-  integrity sha512-FNyq20OSTdUHHaLx4Ke4yvcVEbYaEwuGmD9+L2Fd7V5pvXY7AbehHyCqBapv26VqWJhE7W5VZ2bsO6ULLsgDGQ==
+spy4js@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/spy4js/-/spy4js-2.4.0.tgz#05d13080352de58b9a09cd07eaba467e5dc4246a"
+  integrity sha512-TA5VPFmnrCuZlmc+gnUBQdY+k9CVJGnCmrdhfTXeLMBPHTxOgoiR9jBodEQVttTUNMCHxWQJVlZVhiQKn/aAJw==
   dependencies:
     serialize-as-code "^1.0.9"
 
