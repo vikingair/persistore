@@ -66,4 +66,20 @@ describe('Cookies', () => {
             'myCookie=%2BmyValue%3F;Path=/;SameSite=strict'
         );
     });
+    it('returns all cookies', () => {
+        documentMock.cookie =
+            'someCookieHere=andThisValue; andSoOn=yeah;  myCookie=%2BmyValue%3F;  foo=bar;';
+        expect(Cookies.getAll()).toEqual([
+            ['someCookieHere', 'andThisValue'],
+            ['andSoOn', 'yeah'],
+            ['myCookie', '+myValue?'],
+            ['foo', 'bar'],
+            ['', 'undefined'],
+        ]);
+    });
+
+    it('returns empty array if cookies are empty', () => {
+        documentMock.cookie = '';
+        expect(Cookies.getAll()).toEqual([]);
+    });
 });

@@ -12,8 +12,8 @@ And if this would be neither possible, it will just use local variables, which i
 persistent as possible in this situation without any backend support.
 
 ### Some aspects
+- `TypeScript` support included
 - `flow` support included
-- `typescript` support included
 - coverage of 100% is mandatory
 - < 0.85 kB (gzipped) (see [bundlephobia](https://bundlephobia.com/result?p=persistore))
 - any issues will be fixed as soon as possible
@@ -47,6 +47,21 @@ console.log(Persistore.session.get('my-key')); // prints: '{"here": "comes your 
 Persistore.session.remove('my-key');
 
 console.log(Persistore.session.get('my-key')); // prints: undefined
+```
+And additional features to handle cookies is also included:
+```js
+import { CookieUtil } from 'persistore';
+
+CookieUtil.set('my-key', '{"here": "comes your data"}');
+
+console.log(CookieUtil.get('my-key')); // prints: '{"here": "comes your data"}'
+
+CookieUtil.remove('my-key');
+
+console.log(CookieUtil.get('my-key')); // prints: undefined
+
+// access all cookies
+CookieUtil.getAll().forEach(([name, value]) => console.log(name, value)); // prints all cookies
 ```
 HINT: Since most browsers have a strict cookie size limitation, the Persistore will throw an error if
 it would try to insert a cookie which exceeds the maximum size of 4093 bytes (iOS Safari reserves 3 additional bytes).

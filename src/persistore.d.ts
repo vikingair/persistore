@@ -21,6 +21,7 @@ export type CookieUtilType = {
     set: Setter,
     get: Getter,
     remove: Remover,
+    getAll: () => Array<[string, string]>
 };
 export type useStorageType = (local: boolean) => boolean;
 export type useCookiesType = () => boolean;

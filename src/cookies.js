@@ -30,18 +30,25 @@ const remove = (name: string): void => {
     Access.document().cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:01 GMT;${cookieLocation()}`;
 };
 
-type CookieNameValuePairs = Array<Array<string>>;
+type CookieNameValuePairs = Array<[string, string]>;
 
-const get = (name: string): string | void => {
-    const list: Array<string> = Access.document().cookie.split(';');
-    const pairs: CookieNameValuePairs = list.map(
-        (cookie: string): Array<string> => cookie.split('=')
-    );
-    const foundCookie: CookieNameValuePairs = pairs.filter(
-        (cookiePair: Array<string>): boolean =>
-            cookiePair.length === 2 && cookiePair[0].trim() === name
-    );
-    if (foundCookie.length > 0) return decodeURIComponent(foundCookie[0][1]);
+const getAll = (): CookieNameValuePairs => {
+    const current = Access.document().cookie;
+    return current
+        ? current.split(';').map(
+              (cookie: string): [string, string] => {
+                  const split = cookie.split('=');
+                  return [split[0].trim(), decodeURIComponent(split[1])];
+              }
+          )
+        : [];
 };
 
-export const Cookies = { set, remove, get };
+const get = (name: string): string | void => {
+    const foundCookie: CookieNameValuePairs = getAll().filter(
+        (cookiePair: [string, string]): boolean => cookiePair[0] === name
+    );
+    if (foundCookie.length > 0) return foundCookie[0][1];
+};
+
+export const Cookies = { set, remove, get, getAll };
