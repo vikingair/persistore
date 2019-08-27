@@ -19,9 +19,7 @@ const set = (name: string, value: string): void => {
     const cookie = `${name}=${encodedValue};${cookieLocation()}`;
     if (cookie.length > MAX_COOKIE_LENGTH)
         throw new Error(
-            `Unable to set cookie. Cookie string is to long (${
-                cookie.length
-            } > ${MAX_COOKIE_LENGTH}).`
+            `Unable to set cookie. Cookie string is to long (${cookie.length} > ${MAX_COOKIE_LENGTH}).`
         );
     Access.document().cookie = cookie;
 };
@@ -35,12 +33,10 @@ type CookieNameValuePairs = Array<[string, string]>;
 const getAll = (): CookieNameValuePairs => {
     const current = Access.document().cookie;
     return current
-        ? current.split(';').map(
-              (cookie: string): [string, string] => {
-                  const split = cookie.split('=');
-                  return [split[0].trim(), decodeURIComponent(split[1])];
-              }
-          )
+        ? current.split(';').map((cookie: string): [string, string] => {
+              const split = cookie.split('=');
+              return [split[0].trim(), decodeURIComponent(split[1])];
+          })
         : [];
 };
 
