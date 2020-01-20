@@ -8,15 +8,16 @@
 
 import { Access } from './access';
 
+type SameSite = 'strict' | 'lax' | 'none';
 // it is very important that deleting and setting cookies is performed
 // on the same cookie location
-const cookieLocation = () =>
-    (Access.variables().ci ? '' : 'Secure;') + 'Path=/;SameSite=strict';
+const cookieLocation = (sameSite: SameSite = 'strict') =>
+    `${Access.variables().ci ? '' : 'Secure;'}Path=/;SameSite=${sameSite}`;
 const MAX_COOKIE_LENGTH = 4093;
 
-const set = (name: string, value: string): void => {
+const set = (name: string, value: string, sameSite?: SameSite): void => {
     const encodedValue = encodeURIComponent(value);
-    const cookie = `${name}=${encodedValue};${cookieLocation()}`;
+    const cookie = `${name}=${encodedValue};${cookieLocation(sameSite)}`;
     if (cookie.length > MAX_COOKIE_LENGTH)
         throw new Error(
             `Unable to set cookie. Cookie string is to long (${cookie.length} > ${MAX_COOKIE_LENGTH}).`
