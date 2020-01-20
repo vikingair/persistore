@@ -2,6 +2,7 @@
  * This project was created with flow. Flow will ignore the TypeScript types.
  * But you can find a copy of the source code directly next to this file.
  */
+type SameSite = 'strict' | 'lax' | 'none';
 type Setter = (name: string, value: string) => undefined;
 type Getter = (name: string) => string | undefined;
 type Remover = (name: string) => undefined;
@@ -18,7 +19,7 @@ export type PersistoreType = {
     config: Configure,
 };
 export type CookieUtilType = {
-    set: Setter,
+    set: (name: string, value: string, sameSite?: SameSite) => undefined,
     get: Getter,
     remove: Remover,
     getAll: () => Array<[string, string]>
