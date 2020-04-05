@@ -48,7 +48,7 @@ describe('Persistore - localStorageAvailable', () => {
     beforeEach(() => {
         localVariables = { store: {} };
         Access$Mock.variables.returns(localVariables);
-        Access$Mock.storage.calls(local => {
+        Access$Mock.storage.calls((local) => {
             if (local) return localStorageMock;
             throw new Error('Testing local storage');
         });
@@ -95,7 +95,7 @@ describe('Persistore - sessionStorageAvailable', () => {
     beforeEach(() => {
         localVariables = { store: {} };
         Access$Mock.variables.returns(localVariables);
-        Access$Mock.storage.calls(local => {
+        Access$Mock.storage.calls((local) => {
             if (!local) return sessionStorageMock;
             throw new Error('Testing local storage');
         });
@@ -198,7 +198,7 @@ describe('Persistore', () => {
             ca: false,
         };
         Access$Mock.variables.returns(localVariables);
-        Access$Mock.storage.calls(local => {
+        Access$Mock.storage.calls((local) => {
             if (local) return localStorageMock;
             throw new Error('Testing local storage');
         });
@@ -297,7 +297,7 @@ describe('Persistore.session', () => {
             ca: false,
         };
         Access$Mock.variables.returns(localVariables);
-        Access$Mock.storage.calls(local => {
+        Access$Mock.storage.calls((local) => {
             if (!local) return sessionStorageMock;
             throw new Error('Testing local storage');
         });
