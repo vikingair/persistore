@@ -13,7 +13,6 @@ persistent as possible in this situation without any backend support.
 
 ### Some aspects
 - `TypeScript` support included
-- `flow` support included
 - coverage of 100% is mandatory
 - < 0.85 kB (gzipped) (see [bundlephobia](https://bundlephobia.com/result?p=persistore))
 - any issues will be fixed as soon as possible
@@ -21,7 +20,7 @@ persistent as possible in this situation without any backend support.
 ### Installation
 ##### With yarn
 ```
-yarn add persistore
+npm i --save persistore
 ```
 
 ### Usage
@@ -81,7 +80,7 @@ Persistore.config({ prefix: 'myApp.', insecure: IS_LOCALHOST });
 [license-image]: https://img.shields.io/badge/license-MIT-blue.svg
 [license-url]: https://github.com/fdc-viktor-luft/persistore/blob/master/LICENSE
 [build-image]: https://img.shields.io/travis/fdc-viktor-luft/persistore/master.svg?style=flat-square
-[build-url]: https://travis-ci.org/fdc-viktor-luft/persistore
+[build-url]: https://travis-ci.com/fdc-viktor-luft/persistore
 [npm-image]: https://img.shields.io/npm/v/persistore.svg?style=flat-square
 [npm-url]: https://www.npmjs.org/package/persistore
 [coveralls-image]: https://coveralls.io/repos/github/fdc-viktor-luft/persistore/badge.svg?branch=master
