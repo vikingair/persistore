@@ -3,7 +3,6 @@
  *
  * The LICENSE file can be found in the root directory of this project.
  *
- * @flow
  */
 
 import { Access } from './access';
@@ -19,9 +18,7 @@ const set = (name: string, value: string, sameSite?: SameSite): void => {
     const encodedValue = encodeURIComponent(value);
     const cookie = `${name}=${encodedValue};${cookieLocation(sameSite)}`;
     if (cookie.length > MAX_COOKIE_LENGTH)
-        throw new Error(
-            `Unable to set cookie. Cookie string is to long (${cookie.length} > ${MAX_COOKIE_LENGTH}).`
-        );
+        throw new Error(`Unable to set cookie. Cookie string is to long (${cookie.length} > ${MAX_COOKIE_LENGTH}).`);
     Access.document().cookie = cookie;
 };
 
@@ -41,11 +38,12 @@ const getAll = (): CookieNameValuePairs => {
         : [];
 };
 
-const get = (name: string): string | void => {
+const get = (name: string): string | undefined => {
     const foundCookie: CookieNameValuePairs = getAll().filter(
         (cookiePair: [string, string]): boolean => cookiePair[0] === name
     );
     if (foundCookie.length > 0) return foundCookie[0][1];
+    return undefined;
 };
 
-export const Cookies = { set, remove, get, getAll };
+export const CookieUtil = { set, remove, get, getAll };

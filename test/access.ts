@@ -3,7 +3,6 @@
  *
  * The LICENSE file can be found in the root directory of this project.
  *
- * @flow
  */
 import { Access } from '../src/access';
 

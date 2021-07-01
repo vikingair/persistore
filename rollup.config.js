@@ -1,14 +1,20 @@
-import babel from 'rollup-plugin-babel';
-import flowEntry from 'rollup-plugin-flow-entry';
+import babel from '@rollup/plugin-babel';
+import typescript from 'rollup-plugin-typescript2';
 
 export default {
-    input: 'src/persistore.js',
+    input: 'index.ts',
     plugins: [
+        typescript(),
         babel({
+            babelHelpers: 'bundled',
             exclude: 'node_modules/**',
-            presets: [['@babel/preset-env', { modules: false, targets: { node: "8" } }]]
+            presets: [
+                [
+                    '@babel/preset-env',
+                    { modules: false, targets: { node: '12' } },
+                ],
+            ],
         }),
-        flowEntry(),
     ],
     output: [{
         dir: 'dist/cjs',

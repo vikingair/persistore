@@ -3,10 +3,9 @@
  *
  * The LICENSE file can be found in the root directory of this project.
  *
- * @flow
  */
 
-import { Cookies } from './cookies';
+import { CookieUtil } from './cookies';
 import { Access } from './access';
 
 export const useStorage = (local: boolean): boolean => {
@@ -23,7 +22,7 @@ export const useStorage = (local: boolean): boolean => {
             lv[isAvailable] = false;
         }
     }
-    return (lv[isAvailable]: any);
+    return lv[isAvailable]!;
 };
 
 export const useCookies = (): boolean => {
@@ -32,48 +31,47 @@ export const useCookies = (): boolean => {
         try {
             const document = Access.document();
             const x = '__test__';
-            Cookies.set(x, x);
+            CookieUtil.set(x, x);
             lv.ca = document.cookie.indexOf(x) !== -1;
-            Cookies.remove(x);
+            CookieUtil.remove(x);
             lv.ca = lv.ca && document.cookie.indexOf(x) === -1;
         } catch (e) {
             lv.ca = false;
         }
     }
-    return (lv.ca: any);
+    return lv.ca!;
 };
 
 const _prefixed = (name: string): string => Access.variables().prefix + name;
 
-const _set = (local: boolean) => (name: string, value: string): void => {
-    const key = _prefixed(name);
-    if (useStorage(local)) return Access.storage(local).setItem(key, value);
-    if (useCookies()) return Cookies.set(key, value);
-    Access.variables().store[key] = value;
-};
+const _set =
+    (local: boolean) =>
+    (name: string, value: string): void => {
+        const key = _prefixed(name);
+        if (useStorage(local)) return Access.storage(local).setItem(key, value);
+        if (useCookies()) return CookieUtil.set(key, value);
+        Access.variables().store[key] = value;
+    };
 
-const _get = (local: boolean) => (name: string): string | void => {
-    const key = _prefixed(name);
-    if (useStorage(local))
-        return Access.storage(local).getItem(key) || undefined;
-    if (useCookies()) return Cookies.get(key);
-    return Access.variables().store[key];
-};
+const _get =
+    (local: boolean) =>
+    (name: string): string | undefined => {
+        const key = _prefixed(name);
+        if (useStorage(local)) return Access.storage(local).getItem(key) || undefined;
+        if (useCookies()) return CookieUtil.get(key);
+        return Access.variables().store[key];
+    };
 
-const _remove = (local: boolean) => (name: string): void => {
-    const key = _prefixed(name);
-    if (useStorage(local)) return Access.storage(local).removeItem(key);
-    if (useCookies()) return Cookies.remove(key);
-    delete Access.variables().store[key];
-};
+const _remove =
+    (local: boolean) =>
+    (name: string): void => {
+        const key = _prefixed(name);
+        if (useStorage(local)) return Access.storage(local).removeItem(key);
+        if (useCookies()) return CookieUtil.remove(key);
+        delete Access.variables().store[key];
+    };
 
-const config = ({
-    prefix,
-    insecure,
-}: {
-    prefix?: string,
-    insecure?: boolean,
-}) => {
+const config = ({ prefix, insecure }: { prefix?: string; insecure?: boolean }) => {
     prefix !== undefined && (Access.variables().prefix = prefix);
     insecure !== undefined && (Access.variables().ci = insecure);
 };
@@ -89,5 +87,3 @@ export const Persistore = {
     },
     config,
 };
-
-export const CookieUtil = Cookies;
