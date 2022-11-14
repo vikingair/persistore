@@ -34,7 +34,7 @@ describe('CookieUtil', () => {
         try {
             CookieUtil.set('myCookie', JSON.stringify(arrayWithNumbers));
         } catch (e) {
-            expect(e.message).toBe('Unable to set cookie. Cookie string is to long (4442 > 4093).');
+            expect((e as Error).message).toBe('Unable to set cookie. Cookie string is to long (4442 > 4093).');
             return;
         }
         expect(true).toBe(false); // we do not reach this point
