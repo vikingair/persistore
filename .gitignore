@@ -5,6 +5,7 @@
 
 # all generated files
 /build
+/coverage
 /dist
 
 # misc

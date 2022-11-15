@@ -15,7 +15,7 @@
     "jest": true
   },
   "rules": {
-    "prettier/prettier": "error",
-    "no-unused-vars": 2
+    "prettier/prettier": "warn",
+    "no-unused-vars": "error"
   }
 }
