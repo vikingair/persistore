@@ -1,6 +1,6 @@
 [![GitHub license][license-image]][license-url]
-[![npm package][npm-image]][npm-url] 
-[![Travis][build-image]][build-url]
+[![npm package][npm-image]][npm-url]
+[![GitHub Push][push-image]][push-url]
 [![Coverage Status][coveralls-image]][coveralls-url]
 
 # persistore
@@ -79,8 +79,8 @@ Persistore.config({ prefix: 'myApp.', insecure: IS_LOCALHOST });
   
 [license-image]: https://img.shields.io/badge/license-MIT-blue.svg
 [license-url]: https://github.com/fdc-viktor-luft/persistore/blob/master/LICENSE
-[build-image]: https://img.shields.io/travis/fdc-viktor-luft/persistore/master.svg?style=flat-square
-[build-url]: https://travis-ci.com/fdc-viktor-luft/persistore
+[push-image]: https://github.com/fdc-viktor-luft/persistore/actions/workflows/push.yml/badge.svg
+[push-url]: https://github.com/fdc-viktor-luft/persistore/actions/workflows/push.yml
 [npm-image]: https://img.shields.io/npm/v/persistore.svg?style=flat-square
 [npm-url]: https://www.npmjs.org/package/persistore
 [coveralls-image]: https://coveralls.io/repos/github/fdc-viktor-luft/persistore/badge.svg?branch=master
